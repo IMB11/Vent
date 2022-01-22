@@ -38,7 +38,7 @@ echo "Creating qmod from mod.json"
 $mod = "./mod.json"
 $modJson = Get-Content $mod -Raw | ConvertFrom-Json
 
-$filelist = @($mod, "./ext/Vent.ab")
+$filelist = @($mod, "./ext/Vent.ab", "cover.png")
 
 $cover = "./" + $modJson.coverImage
 if ((-not ($cover -eq "./")) -and (Test-Path $cover))

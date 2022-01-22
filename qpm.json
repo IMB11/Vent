@@ -4,8 +4,8 @@
 	"info": {
 		"name": "Vent",
 		"id": "vent",
-		"version": "0.1.0",
-		"url": null,
+		"version": "1.0.0",
+		"url": "https://cal117.me/mods?mod=Vent",
 		"additionalData": {
 			"overrideSoName": "libvent.so"
 		}
