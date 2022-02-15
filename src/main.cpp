@@ -31,6 +31,7 @@
 #include "HMUI/NoTransitionsButton.hpp"
 #include "HMUI/Touchable.hpp"
 #include "GlobalNamespace/MainMenuViewController.hpp"
+#include "UnityEngine/WaitForSeconds.hpp"
 
 using namespace UnityEngine;
 using namespace GlobalNamespace;
@@ -67,18 +68,14 @@ AssetBundle* loadAssetbundle() {
 }
 
 float easeInOutExpo(float start, float end, float value) {
-    value /= 5;
+    value--;
     end -= start;
-    if (value < 1.0f) {
-        return end * 0.5f * Mathf::Pow(2.0f, 10.0f * (value - 1.0f)) + start;
-    }
-    value -= 1.0f;
-    return end * 0.5f * (-Mathf::Pow(2.0f, 10.0f * (value - 1.0f))) + start;
+    return end * Mathf::Sqrt(1 - value * value) + start;
 }
 
 custom_types::Helpers::Coroutine ventStuff(RectTransform* ventTop)
 {
-    GameObject* o = GameObject::Find(il2cpp_utils::newcsstr("Origin"));
+    GameObject* o = GameObject::Find("Origin");
     Vector3 sp = o->get_transform()->get_position();
     Transform* transform = o->GetComponentInChildren<Camera *>()->get_transform();
     Vector3 offs = ventTop->get_position() - transform->get_position();
@@ -115,14 +112,14 @@ void SpawnVent() {
     if(!assetBundle) return;
     if(vent) return;
 
-    Material* material = QuestUI::ArrayUtil::First(Resources::FindObjectsOfTypeAll<Material*>(), [](Material* x) { return to_utf8(csstrtostr(x->get_name())) == "UINoGlow"; });
-    GameObject* gameObject = GameObject::New_ctor(il2cpp_utils::newcsstr("VentCanvas"));
+    Material* material = QuestUI::ArrayUtil::First(Resources::FindObjectsOfTypeAll<Material*>(), [](Material* x) { return x->get_name() == "UINoGlow"; });
+    GameObject* gameObject = GameObject::New_ctor("VentCanvas");
     gameObject->AddComponent<RectTransform *>();
     gameObject->AddComponent<HMUI::Touchable *>();
     gameObject->AddComponent<Canvas *>();
 
     RectTransform* parent = reinterpret_cast<RectTransform *>(gameObject->get_transform());
-    HMUI::ImageView* imageView = GameObject::New_ctor(il2cpp_utils::newcsstr("Inner"))->AddComponent<HMUI::ImageView *>();
+    HMUI::ImageView* imageView = GameObject::New_ctor("Inner")->AddComponent<HMUI::ImageView *>();
     RectTransform*l = reinterpret_cast<RectTransform *>(imageView->get_transform());
 
     l->set_localEulerAngles(Vector3(90.0f, 0.0f, 0.0f));
@@ -132,9 +129,9 @@ void SpawnVent() {
     l->set_pivot(Vector2(0.5f, 1.0f));
 
     imageView->set_material(material);
-    imageView->set_sprite(assetBundle->LoadAsset<Sprite *>(il2cpp_utils::newcsstr("vent_inner")));
+    imageView->set_sprite(assetBundle->LoadAsset<Sprite *>("vent_inner"));
 
-    HMUI::ImageView* ventTop = GameObject::New_ctor(il2cpp_utils::newcsstr("Top"))->AddComponent<HMUI::ImageView *>();
+    HMUI::ImageView* ventTop = GameObject::New_ctor("Top")->AddComponent<HMUI::ImageView *>();
     ventTop->get_gameObject()->AddComponent<BoxCollider *>();
     ventTop->get_gameObject()->AddComponent<HMUI::NoTransitionsButton *>();
     l = reinterpret_cast<RectTransform *>(ventTop->get_transform());
@@ -144,11 +141,11 @@ void SpawnVent() {
     l->get_transform()->set_parent(parent);
     l->set_pivot(Vector2(0.5f, 1.0f));
     ventTop->set_material(material);
-    ventTop->set_sprite(assetBundle->LoadAsset<Sprite *>(il2cpp_utils::newcsstr("vent_top")));
-    vent = GameObject::New_ctor(il2cpp_utils::newcsstr("SusVent"));
+    ventTop->set_sprite(assetBundle->LoadAsset<Sprite *>("vent_top"));
+    vent = GameObject::New_ctor("SusVent");
     Transform* transform = vent->get_transform();
 
-    GameObject* menuCore = GameObject::Find(il2cpp_utils::newcsstr("MenuCore"));
+    GameObject* menuCore = GameObject::Find("MenuCore");
     transform->set_parent(menuCore->get_transform());
     Object::DontDestroyOnLoad(vent);
     gameObject->get_transform()->set_parent(vent->get_transform());
@@ -158,13 +155,13 @@ void SpawnVent() {
 
     HMUI::NoTransitionsButton* lmao = ventTop->get_gameObject()->GetComponent<HMUI::NoTransitionsButton *>();
     AudioSource* h = vent->AddComponent<AudioSource *>();
-    h->set_clip(assetBundle->LoadAsset<AudioClip *>(il2cpp_utils::newcsstr("vent_open")));
+    h->set_clip(assetBundle->LoadAsset<AudioClip *>("vent_open"));
     h->set_playOnAwake(false);
     lmao->set_onClick(UI::Button::ButtonClickedEvent::New_ctor());
     std::function<void()> lmao_onClick = [h, l] () {
         h->Play();
         getLogger().info("Vent Clicked!");
-        SharedCoroutineStarter::get_instance()->StartCoroutine(reinterpret_cast<System::Collections::IEnumerator*>(custom_types::Helpers::CoroutineHelper::New(ventStuff(l))));
+        SharedCoroutineStarter::get_instance()->StartCoroutine(custom_types::Helpers::CoroutineHelper::New(ventStuff(l)));
     };
 
     ventTop->set_color({0.7f, 0.7f, 0.7f, 1.0f});
