@@ -34,12 +34,14 @@
 using namespace UnityEngine;
 using namespace GlobalNamespace;
 
+
 #define MakeDelegate(DelegateType, varName)                                    \
     (il2cpp_utils::MakeDelegate<DelegateType>(classof(DelegateType), varName))
 
 namespace Vent {
     static AssetBundle *assetBundle;
     static GameObject *vent;
+    const Vector3 defaultVentPosition = Vector3(0.4f, 0.1f, -0.9f);
 
     custom_types::Helpers::Coroutine activateVent(RectTransform *ventTop);
     void generateVent();

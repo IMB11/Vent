@@ -1,5 +1,8 @@
 #include "main.hpp"
+
 #include "Vent.hpp"
+#include "questui/shared/QuestUI.hpp"
+
 
 Configuration &getConfig() {
     static Configuration config(modInfo);
@@ -38,7 +41,12 @@ MAKE_HOOK_MATCH(SceneManager_ChangeScene,
 
 extern "C" void load() {
     il2cpp_functions::Init();
+//    getModConfig().Init(modInfo);
+
     getLogger().info("Installing hooks...");
     INSTALL_HOOK(getLogger(), SceneManager_ChangeScene);
     getLogger().info("Installed all hooks!");
+
+//    QuestUI::Register::RegisterMainMenuModSettingsViewController(modInfo, "Vent", Vent::Views::VentSettingsViewController::DidActivate);
+//    QuestUI::Register::RegisterModSettingsViewController(modInfo, "Vent", Vent::Views::VentSettingsViewController::DidActivate);
 }
