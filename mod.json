@@ -3,10 +3,10 @@
 	"name": "Vent",
 	"id": "vent",
 	"author": "cal117",
-	"version": "0.1.0",
+	"version": "1.1.0",
 	"coverImage": "cover.png",
 	"packageId": "com.beatgames.beatsaber",
-	"packageVersion": "1.19.1",
+	"packageVersion": "1.19.0",
 	"description": "Failed so hard you wanted to vent out of the game? Then here it is. (Launches amongus vr if installed)",
 	"dependencies": [],
 	"modFiles": [
