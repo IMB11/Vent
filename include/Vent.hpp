@@ -41,7 +41,7 @@ using namespace GlobalNamespace;
 namespace Vent {
     static AssetBundle *assetBundle;
     static GameObject *vent;
-    const Vector3 defaultVentPosition = Vector3(0.4f, 0.1f, -0.9f);
+    static const Vector3 defaultVentPosition = Vector3(0.4f, 0.1f, -0.9f);
 
     custom_types::Helpers::Coroutine activateVent(RectTransform *ventTop);
     void generateVent();
@@ -53,10 +53,10 @@ namespace Vent {
             value /= 5;
             end -= start;
             if (value < 1.0f) {
-                return end * 0.5f * Mathf::Pow(2.0f, 10.0f * (value - 1.0f)) + start;
+                return end * 0.5f * std::pow(2.0f, 10.0f * (value - 1.0f)) + start;
             }
             value -= 1.0f;
-            return end * 0.5f * (-Mathf::Pow(2.0f, 10.0f * (value - 1.0f))) + start;
+            return end * 0.5f * (-std::pow(2.0f, 10.0f * (value - 1.0f))) + start;
         }
     };
 }
