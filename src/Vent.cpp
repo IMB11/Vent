@@ -126,6 +126,6 @@ custom_types::Helpers::Coroutine Vent::activateVent(RectTransform *ventTop) {
 }
 
 AssetBundle *Vent::loadAssetbundle() {
-    std::string ABLocation = getDataDir(modInfo) + "Vent.ab";
-    return AssetBundle::LoadFromFile(il2cpp_utils::newcsstr(ABLocation));
+    std::string ABLocation = "/sdcard/ModData/com.beatgames.beatsaber/Mods/Vent/Vent.ab";
+    return AssetBundle::LoadFromFile(ABLocation);
 }
