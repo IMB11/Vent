@@ -10,8 +10,6 @@
 #include "custom-types/shared/coroutine.hpp"
 #include "config-utils/shared/config-utils.hpp"
 
-#include "Vent.hpp"
-
 Configuration &getConfig();
 Logger &getLogger();
 static ModInfo modInfo;
