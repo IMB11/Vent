@@ -1,6 +1,4 @@
 Param(
-    [String] $qmodname="",
-
     [Parameter(Mandatory=$false)]
     [Switch] $clean,
 
@@ -20,6 +18,8 @@ if ($help -eq $true) {
     exit
 }
 
+$qmodName = "{name}-{version}+{gversion}"
+
 if ($qmodName -eq "")
 {
     echo "Give a proper qmod name and try again"
@@ -37,6 +37,10 @@ echo "Creating qmod from mod.json"
 
 $mod = "./mod.json"
 $modJson = Get-Content $mod -Raw | ConvertFrom-Json
+
+$qmodName = $qmodName.replace("{version}", $modJson.version)
+$qmodName = $qmodName.replace("{gversion}", $modJson.packageVersion.replace(".", ""))
+$qmodName = $qmodName.replace("{name}", $modJson.name)
 
 $filelist = @($mod, "./ext/Vent.ab", "cover.png")
 
@@ -77,3 +81,5 @@ if ((-not ($clean.IsPresent)) -and (Test-Path $qmod))
 
 Compress-Archive -Path $filelist -DestinationPath $zip -Update
 Move-Item $zip $qmod -Force
+
+if (-not ($null -eq $env:GITHUB_ENV)) { echo "QMOD={qmodFile}".replace("{qmodFile}", $qmod) | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append }

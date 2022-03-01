@@ -35,3 +35,5 @@ cd build
 & cmake -G "Ninja" -DCMAKE_BUILD_TYPE="RelWithDebInfo" ../
 & cmake --build .
 cd ..
+$ExitCode = $LastExitCode
+exit $ExitCode
