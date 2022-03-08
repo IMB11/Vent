@@ -1,48 +1,18 @@
 Param(
+    [String]$qmodname="",
     [Parameter(Mandatory=$false)]
-    [Switch] $clean,
-
-    [Parameter(Mandatory=$false)]
-    [Switch] $help
+    [Switch]$clean
 )
-
-if ($help -eq $true) {
-    echo "`"BuildQmod <qmodName>`" - Copiles your mod into a `".so`" or a `".a`" library"
-    echo "`n-- Parameters --`n"
-    echo "qmodName `t The file name of your qmod"
-
-    echo "`n-- Arguments --`n"
-
-    echo "-Clean `t`t Performs a clean build on both your library and the qmod"
-
-    exit
-}
-
-$qmodName = "{name}-{version}+{gversion}"
 
 if ($qmodName -eq "")
 {
     echo "Give a proper qmod name and try again"
     exit
 }
-
-& $PSScriptRoot/build.ps1 -clean:$clean
-
-if ($LASTEXITCODE -ne 0) {
-    echo "Failed to build, exiting..."
-    exit
-}
-
-echo "Creating qmod from mod.json"
-
 $mod = "./mod.json"
 $modJson = Get-Content $mod -Raw | ConvertFrom-Json
 
-$qmodName = $qmodName.replace("{version}", $modJson.version)
-$qmodName = $qmodName.replace("{gversion}", $modJson.packageVersion.replace(".", ""))
-$qmodName = $qmodName.replace("{name}", $modJson.name)
-
-$filelist = @($mod, "./ext/Vent.ab", "cover.png")
+$filelist = @($mod)
 
 $cover = "./" + $modJson.coverImage
 if ((-not ($cover -eq "./")) -and (Test-Path $cover))
@@ -52,7 +22,7 @@ if ((-not ($cover -eq "./")) -and (Test-Path $cover))
 
 foreach ($mod in $modJson.modFiles)
 {
-    $path = "./build/" + $mod
+        $path = "./build/" + $mod
     if (-not (Test-Path $path))
     {
         $path = "./extern/libs/" + $mod
@@ -70,16 +40,63 @@ foreach ($lib in $modJson.libraryFiles)
     $filelist += $path
 }
 
+if (Test-Path "./ExtraFiles")
+{
+    $extraFiles = @()
+    $extraEntries = Get-ChildItem ./ExtraFiles/* -Recurse
+
+    foreach ($entry in $extraEntries)
+    {
+        $mode = $entry | Select -Expand Mode
+        if ($mode.Contains("d"))
+        {
+            continue
+        }
+
+        # if not a dir
+        if (-not $entry.Directory.Name.Contains("ExtraFiles"))
+        {
+            $dir = $entry.Directory
+            $folderPath = $dir.Name + "/" + $entry.Name
+            while (($dir.Directory) -and (-not $dir.Directory.Name.Contains("ExtraFiles")))
+            {
+                $folderPath = $dir.Directory.Name + "/" + $folderPath
+            }
+
+            if ($folderPath.Contains("Icons")) 
+            {
+                continue;
+            }
+            $extraFiles += ,$folderPath
+        }
+        else
+        {
+            $extraFiles += ,$entry.Name
+        }
+    }
+
+    foreach ($file in $extraFiles)
+    {
+        $path = "./ExtraFiles/" + $file
+        $filelist += ,$path
+    } 
+}
+else
+{
+    echo "No ExtraFiles Directory Found"
+}
+
 $zip = $qmodName + ".zip"
 $qmod = $qmodName + ".qmod"
 
+if ($clean.IsPresent) {
+    echo "Making Clean Qmod"
+}
+
 if ((-not ($clean.IsPresent)) -and (Test-Path $qmod))
 {
-    echo "Making Clean Qmod"
     Move-Item $qmod $zip -Force
 }
 
 Compress-Archive -Path $filelist -DestinationPath $zip -Update
 Move-Item $zip $qmod -Force
-
-if (-not ($null -eq $env:GITHUB_ENV)) { echo "QMOD={qmodFile}".replace("{qmodFile}", $qmod) | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append }
