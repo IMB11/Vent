@@ -10,9 +10,7 @@
 	"description": "Failed so hard you wanted to vent out of the game? Then here it is. (Launches amongus vr if installed)",
 	"dependencies": [],
 	"modFiles": [],
-	"libraryFiles": [
-		"libbeatsaber-hook_3_6_7.so"
-	],
+	"libraryFiles": [],
 	"fileCopies": [
 		{
 			"name": "Vent.ab",
