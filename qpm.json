@@ -37,7 +37,7 @@
 		},
 		{
 			"id": "questui",
-			"versionRange": "1.13.2",
+			"versionRange": "0.13.2",
 			"additionalData": {
 				"private": true
 			}
