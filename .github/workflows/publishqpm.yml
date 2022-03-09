@@ -39,18 +39,6 @@ jobs:
         - name: QPM chmod
           run: |
             chmod +x ./QPM/qpm-rust
-        - name: QPM Dependencies Cache
-          id: cache-qpm-deps
-          uses: actions/cache@v2
-          env:
-            cache-name: cache-qpm-deps
-          with:
-            path: /home/runner/.local/share/QPM-Rust/cache
-            key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('qpm.json') }}
-            restore-keys: |
-              ${{ runner.os }}-build-${{ env.cache-name }}-
-              ${{ runner.os }}-build-
-              ${{ runner.os }}-
         - name: Build
           run: |
             ./QPM/qpm-rust qmod build --include_libs "lib${module_id}.so"
