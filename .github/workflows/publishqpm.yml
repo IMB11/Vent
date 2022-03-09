@@ -1,0 +1,70 @@
+name: Publish to Mod Repo
+
+env:
+  module_id: vent
+
+on: 
+  workflow_dispatch:
+    inputs:
+      qmod-url:
+        description: 'QMOD URL'     
+        required: true
+        type: string
+      cover:
+        description: 'Cover URL'
+        required: false 
+        type: string
+      author-icon:
+        description: "Author's PFP URL"
+        required: false 
+        type: string
+      note:
+        description: "PR Note"
+        required: false 
+        type: string
+        
+jobs:
+  publish-to-repo:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Get QPM
+          if: steps.cache-qpm.outputs.cache-hit != 'true'
+          uses: dawidd6/action-download-artifact@v2
+          with:
+            github_token: ${{secrets.GITHUB_TOKEN}}
+            workflow: cargo-build.yml
+            name: linux-qpm-rust
+            path: QPM
+            repo: RedBrumbler/QuestPackageManager-Rust
+      - name: QPM chmod
+        run: |
+          chmod +x ./QPM/qpm-rust
+      - name: QPM Dependencies Cache
+        id: cache-qpm-deps
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-qpm-deps
+        with:
+          path: /home/runner/.local/share/QPM-Rust/cache
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('qpm.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: QPM Restore
+        run: |
+          ./QPM/qpm-rust restore
+      - name: Build
+        run: |
+          cd ${GITHUB_WORKSPACE}
+          ./QPM/qpm-rust qmod build --include_libs "lib${module_id}.so"
+      - name: Upload QMod to Mod Repo
+        uses: BobbyShmurner/mod-uploader@v1.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.REPO_TOKEN }}
+          qmod-url: ${{ github.event.inputs.qmod-url }}
+          cover: ${{ github.event.inputs.cover }}
+          author-icon: ${{ github.event.inputs.author-icon }}
+          note: ${{ github.event.inputs.note }}
