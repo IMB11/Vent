@@ -51,11 +51,6 @@ jobs:
               ${{ runner.os }}-build-${{ env.cache-name }}-
               ${{ runner.os }}-build-
               ${{ runner.os }}-
-
-        - name: QPM Restore
-          run: |
-            cd ${GITHUB_WORKSPACE}
-            ./QPM/qpm-rust restore
         - name: Build
           run: |
             cd ${GITHUB_WORKSPACE}
