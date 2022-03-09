@@ -41,6 +41,8 @@ jobs:
             chmod +x ./QPM/qpm-rust
         - name: Build
           run: |
+            cd ${GITHUB_WORKSPACE}
+            echo ${GITHUB_WORKSPACE}
             ./QPM/qpm-rust qmod build --include_libs "lib${module_id}.so"
         - name: Upload QMod to Mod Repo
           uses: BobbyShmurner/mod-uploader@v1.0
