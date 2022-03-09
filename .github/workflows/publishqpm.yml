@@ -54,6 +54,7 @@ jobs:
 
         - name: QPM Restore
           run: |
+            cd ${GITHUB_WORKSPACE}
             ./QPM/qpm-rust restore
         - name: Build
           run: |
