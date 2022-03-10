@@ -40,10 +40,10 @@ foreach ($lib in $modJson.libraryFiles)
     $filelist += $path
 }
 
-if (Test-Path "./ExtraFiles")
+if (Test-Path "./ext")
 {
     $extraFiles = @()
-    $extraEntries = Get-ChildItem ./ExtraFiles/* -Recurse
+    $extraEntries = Get-ChildItem ./ext/* -Recurse
 
     foreach ($entry in $extraEntries)
     {
@@ -54,11 +54,11 @@ if (Test-Path "./ExtraFiles")
         }
 
         # if not a dir
-        if (-not $entry.Directory.Name.Contains("ExtraFiles"))
+        if (-not $entry.Directory.Name.Contains("ext"))
         {
             $dir = $entry.Directory
             $folderPath = $dir.Name + "/" + $entry.Name
-            while (($dir.Directory) -and (-not $dir.Directory.Name.Contains("ExtraFiles")))
+            while (($dir.Directory) -and (-not $dir.Directory.Name.Contains("ext")))
             {
                 $folderPath = $dir.Directory.Name + "/" + $folderPath
             }
@@ -77,13 +77,13 @@ if (Test-Path "./ExtraFiles")
 
     foreach ($file in $extraFiles)
     {
-        $path = "./ExtraFiles/" + $file
+        $path = "./ext/" + $file
         $filelist += ,$path
     } 
 }
 else
 {
-    echo "No ExtraFiles Directory Found"
+    echo "No ext Directory Found"
 }
 
 $zip = $qmodName + ".zip"
