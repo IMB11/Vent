@@ -53,6 +53,8 @@ Android.mk.backup
 [Ee]xtern/
 *.qmod
 qpm.shared.json
+mod.json
+# ^ use template instead.
 qpm_defines.cmake
 ![Cc][Mm]ake[Ll]ists.txt
 
