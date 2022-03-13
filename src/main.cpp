@@ -145,8 +145,6 @@ void SpawnVent() {
     vent = GameObject::New_ctor("SusVent");
     Transform* transform = vent->get_transform();
 
-    GameObject* menuCore = GameObject::Find("MenuCore");
-    transform->set_parent(menuCore->get_transform());
     Object::DontDestroyOnLoad(vent);
     gameObject->get_transform()->set_parent(vent->get_transform());
 
