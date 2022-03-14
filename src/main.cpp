@@ -192,9 +192,19 @@ MAKE_HOOK_MATCH(SceneManager_ChangeScene,
         assetBundle = loadAssetbundle();
         getLogger().info("Loaded AssetBundle");
     }
+
+    if(vent) {
+        vent->SetActive(false);
+    }
+
     if(newScene.get_name() == "MainMenu") {
         getLogger().info("Begin Sussyness");
-        SpawnVent();
+
+        if(vent) {
+            vent->SetActive(true);
+        } else {
+            SpawnVent();
+        }
     }
 
 }
