@@ -1,3 +1,5 @@
+# PLEASE DO NOT FORK AND CONTINUE, I WILL RETURN EVENTUALLY.
+
 # Vent
 
 Failed so hard you wanted to vent out of the game? Then here it is. (Launches amongus vr if installed)
