@@ -27,6 +27,8 @@
 #include "UnityEngine/Sprite.hpp"
 #include "GlobalNamespace/PersistentSingleton_1.hpp"
 #include "GlobalNamespace/SharedCoroutineStarter.hpp"
+#include "custom-types/shared/delegate.hpp"
+#include "JNI_utils.hpp"
 #include "HMUI/ImageView.hpp"
 #include "HMUI/NoTransitionsButton.hpp"
 #include "HMUI/Touchable.hpp"
@@ -34,8 +36,6 @@
 
 using namespace UnityEngine;
 using namespace GlobalNamespace;
-
-#define MakeDelegate(DelegateType, varName) (il2cpp_utils::MakeDelegate<DelegateType>(classof(DelegateType), varName))
 
 static AssetBundle* assetBundle;
 
@@ -104,7 +104,28 @@ custom_types::Helpers::Coroutine ventStuff(RectTransform* ventTop)
         ventTop->set_localEulerAngles(Vector3(190.0f - num2 * 100.0f, 0.0f, 0.0f));
         co_yield nullptr;
     }
-    Application::Quit();
+
+//    try {
+//        JNIEnv *env = JNIUtils::GetJNIEnv();
+//        jobject appContext = JNIUtils::GetAppContext(env);
+//        CALL_JOBJECT_METHOD(env, packageManager, appContext, "getPackageManager", "()Landroid/content/pm/PackageManager;");
+//        CALL_JOBJECT_METHOD(env, intent, packageManager, "getLaunchIntentForPackage", "(Ljava/lang/String;)Landroid/content/Intent;", "com.schellgames.amongusvr");
+//        CALL_JOBJECT_METHOD(env, componentName, intent, "getComponent", "()Landroid/content/ComponentName;");
+//        GET_JCLASS(env, intentClass, "android/content/Intent");
+//        CALL_STATIC_JOBJECT_METHOD(env, restartIntent, intentClass, "makeMainActivity", "(Landroid/content/ComponentName;)Landroid/content/Intent;", componentName);
+
+//        CALL_JOBJECT_METHOD(env, packageManager, appContext, "getPackageManager", "()Landroid/content/pm/PackageManager;");
+//        CALL_JOBJECT_METHOD(env, intent, packageManager, "getLaunchIntentForPackage", "(Ljava/lang/String;)Landroid/content/Intent;", "com.schellgames.amongusvr");
+//
+//        // Load Among Us
+//        CALL_VOID_METHOD(env, appContext, "startActivity", "(Landroid/content/Intent;)V", intent);
+//
+//        execl("/system/bin/sh", "sh", "-c", "am start -a android.intent.action.MAIN -n com.schellgames.amongusvr/com.unity3d.player.UnityPlayerActivity", (char *)NULL);
+//    } catch (char* exception) {
+//        getLogger().info("%s", exception);
+        Application::Quit();
+//    }
+
     co_return;
 }
 
@@ -172,10 +193,8 @@ void SpawnVent() {
         }
     };
 
-    lmao->get_onClick()->AddListener(MakeDelegate(Events::UnityAction *, lmao_onClick));
-
-    using delType = System::Action_1<HMUI::NoTransitionsButton::SelectionState> *;
-    lmao->add_selectionStateDidChangeEvent(MakeDelegate(delType, lmao_sschg));
+    lmao->get_onClick()->AddListener(custom_types::MakeDelegate<Events::UnityAction *>(lmao_onClick));
+    lmao->add_selectionStateDidChangeEvent(custom_types::MakeDelegate<System::Action_1<HMUI::NoTransitionsButton::SelectionState> *>(lmao_sschg));
 
     BoxCollider* component = ventTop->GetComponent<BoxCollider*>();
     component->set_center(Vector3(0.0f, -0.21f, 0.0f));
