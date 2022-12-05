@@ -6,7 +6,7 @@
 	"version": "1.0.0",
 	"coverImage": "cover.png",
 	"packageId": "com.beatgames.beatsaber",
-	"packageVersion": "1.21.0",
+	"packageVersion": "1.25.1",
 	"description": "I swear you just vented...",
 	"dependencies": [],
 	"modFiles": [],
