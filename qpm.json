@@ -5,7 +5,7 @@
 		"name": "Vent",
 		"id": "vent",
 		"version": "1.0.0",
-		"url": "https://cal117.me/mods?mod=Vent",
+		"url": "https://mineblock11.dev/beat-saber/mod/vent",
 		"additionalData": {
 			"overrideSoName": "libvent.so"
 		}
@@ -27,7 +27,7 @@
 		},
 		{
 			"id": "codegen",
-			"versionRange": "^0.29.0",
+			"versionRange": "^0.32.0",
 			"additionalData": {}
 		},
 		{
@@ -36,20 +36,8 @@
 			"additionalData": {}
 		},
 		{
-			"id": "questui",
-			"versionRange": "*",
-			"additionalData": {
-				"private": true
-			}
-		},
-		{
-			"id": "questui_components",
-			"versionRange": "*",
-			"additionalData": {}
-		},
-		{
 			"id": "custom-types",
-			"versionRange": "^0.15.22",
+			"versionRange": "*",
 			"additionalData": {
 			}
 		}

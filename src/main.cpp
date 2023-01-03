@@ -31,6 +31,8 @@
 #include "JNI_utils.hpp"
 #include "HMUI/ImageView.hpp"
 #include "HMUI/NoTransitionsButton.hpp"
+#include "UnityEngine/Cursor.hpp"
+#include "UnityEngine/CursorLockMode.hpp"
 #include "HMUI/Touchable.hpp"
 #include "GlobalNamespace/MainMenuViewController.hpp"
 
@@ -205,6 +207,7 @@ void SpawnVent() {
 MAKE_HOOK_MATCH(SceneManager_ChangeScene,
                     &SceneManagement::SceneManager::Internal_ActiveSceneChanged, void,
                     SceneManagement::Scene oldScene, SceneManagement::Scene newScene) {
+//    UnityEngine::Cursor::set_lockState(UnityEngine::CursorLockMode::_get_Locked());
     SceneManager_ChangeScene(oldScene, newScene);
     if(!assetBundle) {
         getLogger().info("Loading AssetBundle");
