@@ -1,13 +1,5 @@
-# PLEASE DO NOT FORK AND CONTINUE, I WILL RETURN EVENTUALLY.
-
 # Vent
 
 Failed so hard you wanted to vent out of the game? Then here it is. (Launches amongus vr if installed)
 
-Port of Kinsi#3094's vent mod
-
-## Credits
-
-* [zoller27osu](https://github.com/zoller27osu), [Sc2ad](https://github.com/Sc2ad) and [jakibaki](https://github.com/jakibaki) - [beatsaber-hook](https://github.com/sc2ad/beatsaber-hook)
-* [raftario](https://github.com/raftario)
-* [Lauriethefish](https://github.com/Lauriethefish), [danrouse](https://github.com/danrouse) and [Bobby Shmurner](https://github.com/BobbyShmurner) for [this template](https://github.com/Lauriethefish/quest-mod-template)
+Port of Kinsi#3094's vent mod.
